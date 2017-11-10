@@ -1,6 +1,6 @@
 ﻿/*
 [script info]
-version     = 0.1.1
+version     = 0.2
 description = caret commands
 ahk version = 1.1.26.01
 author      = davebrny
@@ -62,6 +62,22 @@ c_move_to_end_of_line:
 send {end}
 return
 
+c_move_to_start_of_next_line:
+send {down}{home}
+return
+
+c_move_to_end_of_next_line:
+send {down}{end}
+return
+
+c_move_to_start_of_previous_line:
+send {up}{home}
+return
+
+c_move_to_end_of_previous_line:
+send {up}{end}
+return
+
 c_move_up_page:
 c_move_page_up:
 send {pgUp}
@@ -118,6 +134,15 @@ c_select_to_end_of_line:
 send +{end}
 return
 
+c_select_line:
+c_select_line_right:
+send {home}+{end}
+return
+
+c_select_line_left:
+send {end}+{home}
+return
+
 c_select_up_page:
 c_select_page_up:
 send +{pgUp}
@@ -136,13 +161,22 @@ c_select_to_end_of_page:
 send ^+{end}
 return
 
-c_reset_selection:
-c_reset_selection_right:
+c_unselect:
+c_unselect_right:
 send {right}
 return
 
-c_reset_selection_left:
+c_unselect_left:
 send {left}
+return
+
+c_unselect_line:
+c_unselect_line_right:
+send {end}
+return
+
+c_unselect_line_left:
+send {home}
 return
 
 
@@ -162,9 +196,61 @@ send {delete}
 return
 
 c_delete_word_backward:
-send ^{backspace}
+if winActive("ahk_exe notepad.exe")
+     send ^+{left}{backspace}
+else send ^{backspace}
 return
 
 c_delete_word_forward:
-send ^{delete}
+if winActive("ahk_exe notepad.exe")
+     send ^+{right}{delete}
+else send ^{delete}
+return
+
+c_delete_to_start_of_line:
+send +{home}{backspace}
+return
+
+c_delete_to_end_of_line:
+send +{end}{delete}
+return
+
+c_delete_up_page:
+c_delete_page_up:
+send +{pgUp}{backspace}
+return
+
+c_delete_down_page:
+c_delete_page_down:
+send +{pgDn}{delete}
+return
+
+c_delete_to_start_of_page:
+send ^+{home}{backspace}
+return
+
+c_delete_to_end_of_page:
+send ^+{end}{delete}
+return
+
+
+; █    ▀  █▀▀▄ █▀▀
+; █   ▀█▀ █  █ █▀▀
+; ▀▀▀ ▀▀▀ ▀  ▀ ▀▀▀
+
+
+c_new_line:
+send {enter}
+return
+
+c_insert_line_before:
+send {home}{enter}{up}
+return
+
+c_insert_line_after:
+send {end}{enter}
+return
+
+c_delete_line:
+send {home}+{end}{delete 2}
 return
