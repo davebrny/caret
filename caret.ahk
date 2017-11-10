@@ -1,6 +1,6 @@
 ﻿/*
 [script info]
-version     = 0.1
+version     = 0.1.1
 description = caret commands
 ahk version = 1.1.26.01
 author      = davebrny
@@ -9,13 +9,17 @@ source      = https://github.com/davebrny/caret
 
 
 caret(command) {
-    if command contains % a_space
-        command := strReplace(command, a_space, "_")
+    loop, parse, command, >, % a_space
+        {
+        this_command := a_loopField
+        if this_command contains % a_space
+            this_command := strReplace(this_command, a_space, "_")
 
-    if isLabel("c_" command)
-        goSub, c_%command%
-    else if isFunc("c_" command)
-        c_%command%()
+        if isLabel("c_" this_command)
+            goSub, c_%this_command%
+        else if isFunc("c_" this_command)
+            c_%this_command%()
+        }
 }
 
 
